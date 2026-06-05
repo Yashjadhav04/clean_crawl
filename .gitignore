@@ -1,0 +1,25 @@
+# Virtual Environment
+.venv/
+env/
+ENV/
+venv/
+
+# Python caching
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local Hackathon Data & Databases (Don't push heavy data dumps)
+*.db
+*.db-wal
+*.db-shm
+*.jsonl
+*.json
+!requirements.txt
+!package.json
+
+# IDE and OS files
+.DS_Store
+.vscode/
+.idea/
