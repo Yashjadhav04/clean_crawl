@@ -140,13 +140,11 @@ pip3 install -r requirements.txt
 
 ### Demo Flow A — Broad Crawl (the classic crawler)
 ```bash
-# Clean any old data
 rm -f demo.db demo.jsonl demo_articles_markdown.jsonl
 
-# Run the broad crawl with live dashboard
 python3 main.py crawl \
-  --seeds "https://www.investopedia.com/investing-4427685" \
   --seeds "https://apnews.com/hub/financial-markets" \
+  --seeds "https://apnews.com/hub/business" \
   --seeds "https://realpython.com" \
   --max-pages 100 --rate 0.5 \
   --db demo.db --output demo.jsonl --dashboard
