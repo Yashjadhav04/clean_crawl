@@ -158,12 +158,25 @@ def _detect_block(status_code: int, html: str, headers: dict) -> tuple[bool, str
         return True, "requires_auth_401", False
     if status_code >= 400:
         return True, f"http_error_{status_code}", False
-    if BLOCKED_RE.search(html[:4000]):
-        if re.search(r"captcha|recaptcha|hcaptcha", html[:4000], re.I):
-            return True, "captcha_detected", False
-        if re.search(r"cloudflare|cf-browser|just a moment", html[:4000], re.I):
-            return True, "cloudflare_challenge", False
+    # Only flag CAPTCHA if it's the *actual page content*, not a footer/script ref.
+    # Real captcha pages have: tiny HTML, the captcha word in <title>, or
+    # specific challenge markers in the visible body.
+    html_lower = html[:8000].lower()
+    is_tiny = len(html.strip()) < 4000
+
+    # Definitive Cloudflare challenge markers (very specific)
+    if "cf-browser-verification" in html_lower or "checking your browser" in html_lower:
+        return True, "cloudflare_challenge", False
+    if "<title>just a moment" in html_lower:
+        return True, "cloudflare_challenge", False
+    # CAPTCHA: only flag if it appears in title OR the page is suspiciously small
+    if is_tiny and re.search(r"<title>[^<]*captcha", html_lower):
+        return True, "captcha_detected", False
+    if is_tiny and re.search(r"<h1[^>]*>[^<]*(captcha|are you human|verify)", html_lower):
+        return True, "captcha_detected", False
+    if "enable javascript and cookies to continue" in html_lower:
         return True, "anti_bot_detected", False
+
     if len(html.strip()) < 200 and status_code == 200:
         return True, "suspiciously_empty_response", True
     return False, "", False

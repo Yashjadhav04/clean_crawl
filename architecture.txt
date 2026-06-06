@@ -1,0 +1,46 @@
+=======================================================================================
+                        CLEANCRAWL: ALTERNATIVE DATA ENGINE
+=======================================================================================
+
+[ 1. INGESTION ] 
+      │
+      ├──> Dynamic Seed Generator (RSS Conduits / Keyword Search)
+      └──> Hardcoded Seed Fallbacks (SEC, MIT, Institutional)
+
+[ 2. INTELLIGENT ROUTING & FETCHING ]
+      │
+      ├──> Trap Detector (Blocks infinite calendars & pagination loops)
+      ├──> Robots.txt Cache & Domain Rate Limiter (Enforces courtesy)
+      └──> Async Fetcher (aiohttp) + Anti-Bot Regex (Detects Cloudflare/429s)
+
+[ 3. CLASSIFICATION & EXTRACTION ]
+      │
+      ├──> Page Classifier (Scores layout to drop tag/search/noise pages)
+      ├──> HTML Cascade Extractor:
+      │      ├── 1. Trafilatura (Primary clean text)
+      │      ├── 2. Readability-lxml (Fallback 1)
+      │      └── 3. BS4 Heuristic (Fallback 2: DOM stripping)
+      └──> PDF Extractor (pdfminer.six for financial/tax docs)
+
+[ 4. PURIFICATION ]
+      │
+      └──> 5-Layer Deduplication Engine:
+             ├── 1. URL Variants (AMP/Print stripping)
+             ├── 2. Parameter Normalization (Drop utm_source, etc.)
+             ├── 3. Title Jaccard Similarity (≥ 90% overlap)
+             ├── 4. Exact Text MD5 Hash
+             └── 5. 64-bit SimHash (Hamming Distance for syndicated content)
+
+[ 5. SCORING & STORAGE ]
+      │
+      ├──> Quality Scorer (Grades A-F based on completeness & HTML noise)
+      ├──> NLP NLP Vectoring (Calculates Bullish/Bearish/Neutral sentiment)
+      └──> Storage Router:
+             ├──> SQLite WAL Database (High concurrency)
+             ├──> JSONL (Rich metadata export)
+             └──> Markdown Export (RAG-optimized for LLMs)
+
+[ 6. PRESENTATION ]
+      │
+      └──> FastAPI Backend + Live Streamlit Dashboard (Real-time telemetry)
+=======================================================================================

@@ -39,7 +39,7 @@ async def run_research(body: dict):
         return JSONResponse({"error": "query is required"}, 400)
 
     max_articles = min(int(body.get("max_articles", 20)), 50)
-    min_trust = float(body.get("min_trust", 0.45))
+    min_trust = float(body.get("min_trust", 0.30))   # broader default now
 
     # Check cache (5 minute TTL)
     import time
@@ -849,8 +849,8 @@ RESEARCH_HTML = """<!DOCTYPE html>
         <label>Min source trust:
           <select id="opt-trust">
             <option value="0.60">Tier 1–3 only (≥0.60)</option>
-            <option value="0.45" selected>Tier 1–4 (≥0.45)</option>
-            <option value="0.30">All sources (≥0.30)</option>
+            <option value="0.45">Tier 1–4 (≥0.45)</option>
+            <option value="0.30" selected>Global web (≥0.30)</option>
           </select>
         </label>
       </div>

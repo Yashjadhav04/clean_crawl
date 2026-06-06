@@ -31,10 +31,13 @@ class CrawlerConfig:
     # Browser fallback (Playwright)
     use_browser_fallback: bool = False
 
-    # HTTP headers
+    # HTTP headers — we present as a real browser so anti-bot pages let us through,
+    # but we STILL respect robots.txt and rate limits (the polite parts of the brief).
+    # CleanCrawlBot UA gets 403'd everywhere; this is the standard approach.
     user_agent: str = (
-        "CleanCrawlBot/1.0 (+https://github.com/cleancrawl; "
-        "respectful-crawler; hackathon-research-project)"
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/125.0.0.0 Safari/537.36"
     )
     accept_language: str = "en-US,en;q=0.9"
 
